@@ -1,0 +1,40 @@
+/* Basic Reset */
+h1 {
+    font-size: 2rem;
+    text-align: center;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+}
+
+.todo-container {
+    width: 300px;
+}
+
+#todo-input {
+    width: 70%;
+    padding: 10px;
+}
+
+#add-btn {
+    width: 25%;
+    padding: 10px;
+    cursor: pointer;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f4f4f4;
+    cursor: pointer;
+}
+
