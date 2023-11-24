@@ -3,9 +3,10 @@ self.addEventListener('install', event => {
         caches.open('v1').then(cache => {
             return cache.addAll([
                 '/',
-                'index.html',
-                'styles.css',
-                'main.js',
+                '/hellow_pwa/',
+                '/hellow_pwa/index.html',
+                '/hellow_pwa/styles.css',
+                '/hellow_pwa/main.js',
             ]);
         })
     );
