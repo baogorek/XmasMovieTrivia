@@ -48,11 +48,14 @@
       await webR.init();
       const outElem = document.getElementById('out');
       outElem.innerText = 'Loading plotly, please wait...';
-      await webR.installPackages(['jsonlite', 'ggplot2', 'plotly'], true);
+      await webR.installPackages(['jsonlite', 'ggplot2', 'plotly', 'dplyr'], true);
       outElem.innerText = 'Generating plot, please wait...';
       const plotlyData = await webR.evalRString(`
           library(plotly)
           library(ggplot2)
+          library(dplyr)
+
+          iris %>% head()
           
           p <- ggplot(mpg, aes(displ, hwy, colour = class)) +
             geom_point()
