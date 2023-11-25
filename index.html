@@ -19,10 +19,11 @@
       <ul id="todo-list"></ul>
   </div>
   <py-config type="toml">
-    packages = ["numpy"]
+    packages = ["numpy", "beautifulsoup4"]
   </py-config>
   <py-script>
         import numpy as np
+        from bs4 import BeautifulSoup
 
         a = np.array([1, 2, 3])
         print("Array:", a)
