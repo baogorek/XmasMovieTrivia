@@ -10,6 +10,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
+  <py-env>
+      - numpy
+  </py-env>
   <div>
     <h1>ToDo List: </h1>
   </div>
@@ -19,6 +22,11 @@
       <ul id="todo-list"></ul>
   </div>
   <py-script>
+        import numpy as np
+
+        # Example NumPy usage
+        a = np.array([1, 2, 3])
+        print("Array:", a)
         print("Hello from Python in the browser!")
   </py-script>
   <script src="/hellow_pwa/main.js"></script>
