@@ -5,6 +5,8 @@
   <link rel="stylesheet" href="/hellow_pwa/styles.css">
   <link rel="manifest" href="/hellow_pwa/manifest.json">
   <link rel="icon" href="/hellow_pwa/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
@@ -16,6 +18,9 @@
       <button id="add-btn">Add</button>
       <ul id="todo-list"></ul>
   </div>
+  <py-script>
+        print("Hello from Python in the browser!")
+  </py-script>
   <script src="/hellow_pwa/main.js"></script>
 </body>
 </html>
