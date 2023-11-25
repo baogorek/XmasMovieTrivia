@@ -20,9 +20,12 @@
       <ul id="todo-list"></ul>
   </div>
   <py-script>
+
+        import micropip
+        await micropip.install('numpy')
+
         import numpy as np
 
-        # Example NumPy usage
         a = np.array([1, 2, 3])
         print("Array:", a)
         print("Hello from Python in the browser!")
