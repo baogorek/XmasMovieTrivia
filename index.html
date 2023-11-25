@@ -55,12 +55,12 @@
           library(ggplot2)
           library(dplyr)
 
-          iris %>% head() %>% print()
+          iris %>% head(1) %>% str() %>% print()
           
-          #p <- ggplot(mpg, aes(displ, hwy, colour = class)) +
-          #  geom_point()
+          p <- ggplot(mpg, aes(displ, hwy, colour = class)) +
+            geom_point()
           
-          #plotly_json(p, pretty = FALSE)
+          plotly_json(p, pretty = FALSE)
           `);
       outElem.replaceChildren();
       Plotly.newPlot('out', JSON.parse(plotlyData), {});
