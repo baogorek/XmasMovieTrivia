@@ -7,6 +7,9 @@
   <link rel="icon" href="/hellow_pwa/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
   <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.2/plotly.min.js"
+      charset="utf-8"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
@@ -34,6 +37,31 @@
         print("Array:", a)
         print("Hello from Python in the browser!")
   </py-script>
+
+    <div>
+      <pre><code id="out">Loading webR, please wait...</code></pre>
+    </div>
+    
+    <script type="module">
+      import { WebR } from 'https://webr.r-wasm.org/latest/webr.mjs';
+      const webR = new WebR({ interactive: false });
+      await webR.init();
+      const outElem = document.getElementById('out');
+      outElem.innerText = 'Loading plotly, please wait...';
+      await webR.installPackages(['jsonlite', 'ggplot2', 'plotly'], true);
+      outElem.innerText = 'Generating plot, please wait...';
+      const plotlyData = await webR.evalRString(`
+          library(plotly)
+          library(ggplot2)
+          
+          p <- ggplot(mpg, aes(displ, hwy, colour = class)) +
+            geom_point()
+          
+          plotly_json(p, pretty = FALSE)
+          `);
+      outElem.replaceChildren();
+      Plotly.newPlot('out', JSON.parse(plotlyData), {});
+    </script>
   <script src="/hellow_pwa/main.js"></script>
 </body>
 </html>
