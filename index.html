@@ -8,17 +8,6 @@
   <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
   <script defer src="https://pyscript.net/latest/pyscript.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-    <script type="text/javascript">
-            async function main() {
-                      let pyodide = await loadPyodide();
-                      await pyodide.loadPackage("micropip");
-                      const micropip = pyodide.pyimport("micropip");
-                      await micropip.install("numpy");
-                    }
-                  main();
-     </script>
-
 </head>
 <body>
  <div>
@@ -29,6 +18,9 @@
       <button id="add-btn">Add</button>
       <ul id="todo-list"></ul>
   </div>
+  <py-env>
+    - numpy
+  </py-env>
   <py-script>
         import numpy as np
 
