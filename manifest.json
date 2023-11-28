@@ -1,13 +1,13 @@
 {
-  "name": "Hello World PWA",
-  "short_name": "HelloPWA",
-  "start_url": "/hellow_pwa/",
+  "name": "12 Days of Xmas Movie Trivia",
+  "short_name": "XmasMovieTrivia",
+  "start_url": "/XmasMovieTrivia/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",
   "icons": [
     {
-      "src": "/hellow_pwa/icons/icon.png",
+      "src": "/XmasMovieTrivia/icons/icon.png",
       "sizes": "512x512",
       "type": "image/png"
     }

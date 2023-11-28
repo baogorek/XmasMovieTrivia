@@ -1,6 +1,6 @@
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/hellow_pwa/service-worker.js')
+    navigator.serviceWorker.register('/XmasMovieTrivia/service-worker.js')
       .then(registration => {
         console.log('SW registered: ', registration);
       }).catch(registrationError => {
@@ -9,45 +9,40 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
-    const addButton = document.getElementById('add-btn');
-    const inputField = document.getElementById('todo-input');
-    const todoList = document.getElementById('todo-list');
+    const questionElement = document.getElementById('question');
+    const optionsForm = document.getElementById('options');
+    const feedbackElement = document.getElementById('feedback');
+    const submitButton = document.getElementById('submit');
 
-    // Load todos from local storage
-    const todos = JSON.parse(localStorage.getItem('todos')) || [];
-    todos.forEach(todo => addTodo(todo));
+    const trivia = {
+        question: "In which Christmas movie does the main character travel to New York to meet his father?",
+        options: ["Elf", "Home Alone", "The Santa Clause", "A Christmas Carol", "Miracle on 34th Street"],
+        answer: "Elf"
+    };
 
-    // Add todo event
-    addButton.addEventListener('click', () => {
-        let todoText = inputField.value.trim();
-        if (todoText) {
-            addTodo(todoText);
-            saveTodo(todoText);
-            inputField.value = '';
-        }
+    questionElement.textContent = trivia.question;
+    trivia.options.forEach((option, index) => {
+        let label = document.createElement('label');
+        let radioButton = document.createElement('input');
+        radioButton.type = 'radio';
+        radioButton.name = 'triviaOption';
+        radioButton.value = option;
+        radioButton.id = 'option' + index;
+
+        label.appendChild(radioButton);
+        label.appendChild(document.createTextNode(option));
+        optionsForm.appendChild(label);
     });
 
-    function addTodo(todoText) {
-        const li = document.createElement('li');
-        li.textContent = todoText;
-        li.addEventListener('click', () => {
-            todoList.removeChild(li);
-            removeTodo(todoText);
-        });
-        todoList.appendChild(li);
-    }
-
-    function saveTodo(todoText) {
-        todos.push(todoText);
-        localStorage.setItem('todos', JSON.stringify(todos));
-    }
-
-    function removeTodo(todoText) {
-        const index = todos.indexOf(todoText);
-        if (index > -1) {
-            todos.splice(index, 1);
+    submitButton.onclick = (e) => {
+        e.preventDefault();
+        let selectedAnswer = document.querySelector('input[name="triviaOption"]:checked')?.value;
+        if (selectedAnswer === trivia.answer) {
+            feedbackElement.textContent = 'Correct!';
+        } else {
+            feedbackElement.textContent = 'Try again.';
         }
-        localStorage.setItem('todos', JSON.stringify(todos));
-    }
+    };
 });

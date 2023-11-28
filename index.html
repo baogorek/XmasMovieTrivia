@@ -1,70 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Hello World ToDo List PWA</title>
-  <link rel="stylesheet" href="/hellow_pwa/styles.css">
-  <link rel="manifest" href="/hellow_pwa/manifest.json">
-  <link rel="icon" href="/hellow_pwa/favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
-  <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.2/plotly.min.js"
-      charset="utf-8"></script>
+  <title>12 Days of Xmas Movie Trivia</title>
+  <link rel="stylesheet" href="/XmasMovieTrivia/styles.css">
+  <link rel="manifest" href="/XmasMovieTrivia/manifest.json">
+  <link rel="icon" href="/XmasMovieTrivia/favicon.ico" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
- <div>
-    <h1>ToDo List: </h1>
+  <div>
+     <h1>Xmas Movie Trivia</h1>
+
+     <div id="trivia">
+       <p id="question"></p>
+       <form id="options">
+         <!-- Radio buttons will be added here -->
+       </form>
+       <button id="submit">Submit Answer</button>
+       <p id="feedback"></p>
+     </div>
   </div>
-  <div class="todo-container">
-      <input type="text" id="todo-input" placeholder="Add a task">
-      <button id="add-btn">Add</button>
-      <ul id="todo-list"></ul>
-  </div>
-  <py-config type="toml">
-    packages = ["numpy", "beautifulsoup4", "requests"]
-  </py-config>
-  <py-script>
-        import numpy as np
-        import bs4
-        import requests
-        from bs4 import BeautifulSoup
-
-        print(bs4.__version__)
-        print(requests.__version__)
-
-        a = np.array([1, 2, 3])
-        print("Array:", a)
-        print("Hello from Python in the browser!")
-  </py-script>
-
-    <div>
-      <pre><code id="out">Loading webR, please wait...</code></pre>
-    </div>
-    
-    <script type="module">
-      import { WebR } from 'https://webr.r-wasm.org/latest/webr.mjs';
-      const webR = new WebR({ interactive: false });
-      await webR.init();
-      const outElem = document.getElementById('out');
-      outElem.innerText = 'Loading plotly, please wait...';
-      await webR.installPackages(['jsonlite', 'ggplot2', 'plotly', 'dplyr'], true);
-      outElem.innerText = 'Generating plot, please wait...';
-      const plotlyData = await webR.evalRString(`
-          library(plotly)
-          library(ggplot2)
-          library(dplyr)
-
-          iris %>% head(1) %>% str() %>% print()
-          
-          p <- ggplot(mpg, aes(displ, hwy, colour = class)) +
-            geom_point()
-          
-          plotly_json(p, pretty = FALSE)
-          `);
-      outElem.replaceChildren();
-      Plotly.newPlot('out', JSON.parse(plotlyData), {});
-    </script>
-  <script src="/hellow_pwa/main.js"></script>
+  <script src="/XmasMovieTrivia/main.js"></script>
 </body>
 </html>
