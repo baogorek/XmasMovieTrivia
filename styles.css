@@ -38,3 +38,7 @@ body {
     border-radius: 10px;
 }
 
+#shareButton {
+    display: none;
+}
+
