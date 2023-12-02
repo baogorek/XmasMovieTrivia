@@ -17,16 +17,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const triviaQuestions = [
-    {
-        question: "In which Christmas movie does the main character travel to New York to meet his father?",
-        options: ["Elf", "Home Alone", "The Santa Clause", "A Christmas Carol", "Miracle on 34th Street"],
-        answer: "Elf"
-    },
-    {
-        question: "Question for Day 2",
-        options: ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"],
-        answer: "Correct Answer for Day 2"
-    }
+    [
+        { question: "First question for Day 1", options: ["Option 1", "Option 2"], answer: "Option 1" },
+        { question: "Second question for Day 1", options: ["Option 3", "Option 4"], answer: "Option 3" }
+    ],
+    [
+        { question: "First question for Day 2", options: ["Option 1", "Option 2"], answer: "Option 1" },
+        { question: "Second question for Day 2", options: ["Option 3", "Option 4"], answer: "Option 3" }
+    ],
 ];
 
 function generateShareUrl(score) {
@@ -34,42 +32,62 @@ function generateShareUrl(score) {
     return `https://x.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
 }
 
+// function showQuestion() {
+//     // Logic to display the actual question
+//     // This is where you would update the DOM with the day's trivia question and answers
+//     const day = getDayOfChristmas();
+//     if (day !== null && day <= triviaQuestions.length) {
+//         const dayTrivia = triviaQuestions[day - 1];
+//         updateTriviaUI(dayTrivia);  
+//     }
+// } 
 
-document.addEventListener('DOMContentLoaded', () => {
-    const submitButton = document.getElementById('submit');
-    const feedbackElement = document.getElementById('feedback');
+function startInitialCountdown() {
+    let countdownTime = 3; // Adjust time as needed
+    let countdownElement = document.getElementById('countdown'); 
 
-    displayQuestionOfDay();
+    let countdownInterval = setInterval(() => {
+        countdownTime--;
+        countdownElement.textContent = `Get ready! Starting in ${countdownTime}...`;
 
-  document.getElementById('shareButton').addEventListener('click', () => {
-      const shareUrl = generateShareUrl(score);
-      window.open(shareUrl, '_blank');
-  });
-
-  document.getElementById('submit').onclick = (e) => {
-      e.preventDefault();
-      console.log("Submit button clicked");
-      document.getElementById('shareButton').style.display = 'block';
-  };
-
-  submitButton.onclick = (e) => {
-      e.preventDefault();
-      const day = getDayOfChristmas();
-      if (day !== null && day <= triviaQuestions.length) {
-        const dayTrivia = triviaQuestions[day - 1];
-        let selectedAnswer = document.querySelector('input[name="triviaOption"]:checked')?.value;
-        // Immediate feedback portion
-        if (selectedAnswer === dayTrivia.answer) {
-            feedbackElement.textContent = 'Correct!';
-        } else {
-            feedbackElement.textContent = 'Try again.';
+        if (countdownTime <= 0) {
+            clearInterval(countdownInterval);
+            countdownElement.textContent = '';
+            displayQuestionOfDay(0);
         }
-        // Post to X
-        console.log("Submit button clicked");
-        document.getElementById('shareButton').style.display = 'block';
-      }
-  };
-});
+    }, 1000);
+}
+
+function endQuestion() {
+    document.getElementById('question').textContent = '';
+}
+
+function endDay() {
+    document.getElementById('trivia').style.display = 'none';
+    document.getElementById('shareButton').style.display = 'block';
+}
+
+
+function startAnsweringCountdown(callback) {
+    let answeringTime = 5;
+    let countdownElement = document.getElementById('countdown'); 
+
+    countdownElement.style.display = 'block';
+    countdownElement.textContent = `Time remaining: ${answeringTime} seconds`;
+    document.getElementById('trivia').style.display = 'block';
+    let countdownInterval = setInterval(() => {
+        answeringTime--;
+        countdownElement.textContent = `Time remaining: ${answeringTime} seconds`;
+
+        if (answeringTime <= 0) {
+            clearInterval(countdownInterval);
+            countdownElement.textContent = '';
+            countdownElement.style.display = 'none'; 
+            endQuestion();
+            callback();
+        }
+    }, 1000);
+}
 
 
 function getDayOfChristmas() {
@@ -86,15 +104,22 @@ function getDayOfChristmas() {
     }
 }
 
-function displayQuestionOfDay() {
+function displayQuestionOfDay(questionIndex) {
     const day = getDayOfChristmas();
-    if (day !== null && day <= triviaQuestions.length) {
-        const dayTrivia = triviaQuestions[day - 1]; // Arrays are 0-indexed
+    if (day !== null && day <= triviaQuestions.length && questionIndex < triviaQuestions[day - 1].length) {
+        const dayTrivia = triviaQuestions[day - 1][questionIndex];
+        document.getElementById('question').textContent = dayTrivia.question;
         updateTriviaUI(dayTrivia);
     } else {
         console.log("It's not the time for 12 Days of Christmas yet.");
-        // Handle days outside the 12 days of Christmas
     }
+    startAnsweringCountdown(() => {
+       if (questionIndex + 1 < triviaQuestions[day - 1].length) {
+           displayQuestionOfDay(questionIndex + 1); // Display the next question
+       } else {
+           endDay();
+       }
+    })
 }
 
 
@@ -127,6 +152,36 @@ function updateTriviaUI(trivia) {
     feedbackElement.textContent = '';
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  const submitButton = document.getElementById('submit');
+  const feedbackElement = document.getElementById('feedback');
 
-document.addEventListener('DOMContentLoaded', displayQuestionOfDay);
+
+  document.getElementById('startButton').addEventListener('click', () => {
+      document.getElementById('intro').style.display = 'none';
+      startInitialCountdown();
+  });
+
+
+  document.getElementById('shareButton').addEventListener('click', () => {
+      const shareUrl = generateShareUrl(score);
+      window.open(shareUrl, '_blank');
+  });
+
+  submitButton.onclick = (e) => {
+    e.preventDefault();
+    const day = getDayOfChristmas();
+    if (day !== null && day <= triviaQuestions.length) {
+      const dayTrivia = triviaQuestions[day - 1];
+      let selectedAnswer = document.querySelector('input[name="triviaOption"]:checked')?.value;
+      if (selectedAnswer === dayTrivia.answer) {
+          feedbackElement.textContent = 'Correct!';
+      } else {
+          feedbackElement.textContent = 'Try again.';
+      }
+          endQuestion();
+    }
+  };
+});
+
 
