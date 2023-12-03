@@ -10,11 +10,9 @@ if ('serviceWorker' in navigator) {
 }
 
 let score = 0; // Initialize score
+let countdownInterval; // Declare this outside to access it globally in this scope
+let currentQuestionIndex = 0; // Global variable to track the question index
 
-document.addEventListener('DOMContentLoaded', () => {
-
-
-});
 
 const triviaQuestions = [
     [
@@ -27,24 +25,19 @@ const triviaQuestions = [
     ],
 ];
 
+
 function generateShareUrl(score) {
     const tweetText = `I scored ${score} points in the 12 Days of Christmas Trivia! Check it out: [Your Game URL] #12DaysTrivia`;
     return `https://x.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
 }
 
-// function showQuestion() {
-//     // Logic to display the actual question
-//     // This is where you would update the DOM with the day's trivia question and answers
-//     const day = getDayOfChristmas();
-//     if (day !== null && day <= triviaQuestions.length) {
-//         const dayTrivia = triviaQuestions[day - 1];
-//         updateTriviaUI(dayTrivia);  
-//     }
-// } 
 
 function startInitialCountdown() {
     let countdownTime = 3; // Adjust time as needed
     let countdownElement = document.getElementById('countdown'); 
+
+    document.getElementById('trivia').style.display = 'block';
+    countdownElement.textContent = `Get ready! Starting in ${countdownTime}...`;
 
     let countdownInterval = setInterval(() => {
         countdownTime--;
@@ -58,12 +51,19 @@ function startInitialCountdown() {
     }, 1000);
 }
 
-function endQuestion() {
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+async function endQuestion() {
     document.getElementById('question').textContent = '';
+    document.getElementById('options').textContent = 'Hang on...';
+    document.getElementById('submit').style.display = 'none';
+    await sleep(300); // TODO (baogorek): another countdown timer might be nicer
 }
 
 function endDay() {
-    document.getElementById('trivia').style.display = 'none';
+    //document.getElementById('trivia').style.display = 'none';
+    document.getElementById('options').textContent = `End of the Day. Post your score of ${score} to X`;
+    document.getElementById('feedback').textContent = `You got a score of ${score} in the 12 Days of XMas Movie Trivia Challenge!`;
     document.getElementById('shareButton').style.display = 'block';
 }
 
@@ -72,23 +72,32 @@ function startAnsweringCountdown(callback) {
     let answeringTime = 5;
     let countdownElement = document.getElementById('countdown'); 
 
+    document.getElementById('submit').style.display = 'block';
+
     countdownElement.style.display = 'block';
     countdownElement.textContent = `Time remaining: ${answeringTime} seconds`;
     document.getElementById('trivia').style.display = 'block';
+
     let countdownInterval = setInterval(() => {
         answeringTime--;
         countdownElement.textContent = `Time remaining: ${answeringTime} seconds`;
 
         if (answeringTime <= 0) {
             clearInterval(countdownInterval);
-            countdownElement.textContent = '';
-            countdownElement.style.display = 'none'; 
-            endQuestion();
+            // countdownElement.textContent = '';
+            // countdownElement.style.display = 'none'; 
+            // endQuestion();
+            clearAnsweringCountdown();
             callback();
         }
     }, 1000);
 }
 
+function clearAnsweringCountdown() {
+      clearInterval(countdownInterval);
+      document.getElementById('countdown').textContent = '';
+      document.getElementById('countdown').style.display = 'none';
+}
 
 function getDayOfChristmas() {
     const start = new Date('2023-12-14');
@@ -105,6 +114,7 @@ function getDayOfChristmas() {
 }
 
 function displayQuestionOfDay(questionIndex) {
+    currentQuestionIndex = questionIndex; // Update the global variable
     const day = getDayOfChristmas();
     if (day !== null && day <= triviaQuestions.length && questionIndex < triviaQuestions[day - 1].length) {
         const dayTrivia = triviaQuestions[day - 1][questionIndex];
@@ -153,35 +163,34 @@ function updateTriviaUI(trivia) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const submitButton = document.getElementById('submit');
-  const feedbackElement = document.getElementById('feedback');
-
-
-  document.getElementById('startButton').addEventListener('click', () => {
-      document.getElementById('intro').style.display = 'none';
-      startInitialCountdown();
-  });
-
-
-  document.getElementById('shareButton').addEventListener('click', () => {
-      const shareUrl = generateShareUrl(score);
-      window.open(shareUrl, '_blank');
-  });
-
-  submitButton.onclick = (e) => {
-    e.preventDefault();
-    const day = getDayOfChristmas();
-    if (day !== null && day <= triviaQuestions.length) {
-      const dayTrivia = triviaQuestions[day - 1];
-      let selectedAnswer = document.querySelector('input[name="triviaOption"]:checked')?.value;
-      if (selectedAnswer === dayTrivia.answer) {
-          feedbackElement.textContent = 'Correct!';
-      } else {
-          feedbackElement.textContent = 'Try again.';
-      }
-          endQuestion();
-    }
-  };
+    const submitButton = document.getElementById('submit');
+    const feedbackElement = document.getElementById('feedback');
+  
+    document.getElementById('startButton').addEventListener('click', () => {
+        document.getElementById('intro').style.display = 'none';
+        startInitialCountdown();
+    });
+  
+    document.getElementById('shareButton').addEventListener('click', () => {
+        const shareUrl = generateShareUrl(score);
+        window.open(shareUrl, '_blank');
+    });
+  
+    submitButton.onclick = (e) => {
+        e.preventDefault();
+        clearAnsweringCountdown();
+        const day = getDayOfChristmas();
+        if (day !== null && day <= triviaQuestions.length) {
+            const dayTrivia = triviaQuestions[day - 1];
+            let selectedAnswer = document.querySelector('input[name="triviaOption"]:checked')?.value;
+            let correctAnswer = dayTrivia[currentQuestionIndex].answer;
+            if (selectedAnswer === correctAnswer) {
+                feedbackElement.textContent = 'Correct!';
+               score += 10;
+            } else {
+                feedbackElement.textContent = `Incorrect! The correct answer was \"${correctAnswer}!\"`;
+            }
+            endQuestion();
+        }
+    };
 });
-
-
