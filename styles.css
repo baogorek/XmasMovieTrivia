@@ -38,7 +38,15 @@ body {
     border-radius: 10px;
 }
 
-#shareButton, #submit {
+#shareButton {
     display: none;
 }
 
+.trivia-option {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    /* Add more styles as needed */
+}

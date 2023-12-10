@@ -12,6 +12,8 @@ if ('serviceWorker' in navigator) {
 let score = 0; // Initialize score
 let countdownInterval; // Declare this outside to access it globally in this scope
 let currentQuestionIndex = 0; // Global variable to track the question index
+let questionAnswered = false;
+let stage = "Intro";
 
 
 const triviaQuestions = [
@@ -39,11 +41,12 @@ function startInitialCountdown() {
     document.getElementById('trivia').style.display = 'block';
     countdownElement.textContent = `Get ready! Starting in ${countdownTime}...`;
 
-    let countdownInterval = setInterval(() => {
+    countdownInterval = setInterval(() => {
         countdownTime--;
         countdownElement.textContent = `Get ready! Starting in ${countdownTime}...`;
 
-        if (countdownTime <= 0) {
+        if (countdownTime <= 1) {
+            stage = "Question";
             clearInterval(countdownInterval);
             countdownElement.textContent = '';
             displayQuestionOfDay(0);
@@ -51,65 +54,68 @@ function startInitialCountdown() {
     }, 1000);
 }
 
-const sleep = ms => new Promise(r => setTimeout(r, ms));
+// const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-async function endQuestion() {
+function endQuestion() {
+    console.log("In endQuestion");
     document.getElementById('question').textContent = '';
     document.getElementById('options').textContent = 'Hang on...';
-    document.getElementById('submit').style.display = 'none';
-    await sleep(300); // TODO (baogorek): another countdown timer might be nicer
+    questionAnswered = true;
 }
 
 function endDay() {
-    //document.getElementById('trivia').style.display = 'none';
+    stage = "EndDay";
     document.getElementById('options').textContent = `End of the Day. Post your score of ${score} to X`;
     document.getElementById('feedback').textContent = `You got a score of ${score} in the 12 Days of XMas Movie Trivia Challenge!`;
     document.getElementById('shareButton').style.display = 'block';
 }
 
 
-function startAnsweringCountdown(callback) {
+async function startAnsweringCountdown(callback) {
     let answeringTime = 5;
+    questionAnswered = false;
     let countdownElement = document.getElementById('countdown'); 
-
-    document.getElementById('submit').style.display = 'block';
 
     countdownElement.style.display = 'block';
     countdownElement.textContent = `Time remaining: ${answeringTime} seconds`;
     document.getElementById('trivia').style.display = 'block';
 
-    let countdownInterval = setInterval(() => {
-        answeringTime--;
-        countdownElement.textContent = `Time remaining: ${answeringTime} seconds`;
-
-        if (answeringTime <= 0) {
-            clearInterval(countdownInterval);
-            // countdownElement.textContent = '';
-            // countdownElement.style.display = 'none'; 
-            // endQuestion();
-            clearAnsweringCountdown();
-            callback();
-        }
-    }, 1000);
+    countdownInterval = setInterval(() => {
+       if ((questionAnswered || answeringTime <= 1) & stage == "Question") {
+           answeringTime = 13; // Reset the time or set it to the desired delay
+           stage = "Intermission";
+           console.log("intermission");
+       } else if (answeringTime <= 1 & stage == "Intermission") {
+           stage = "Question";
+           clearInterval(countdownInterval);
+           clearAnsweringCountdown();
+           callback();
+       }
+       answeringTime--;
+       countdownElement.textContent = `Time remaining: ${answeringTime} seconds`;
+    }, 1000); 
 }
 
-function clearAnsweringCountdown() {
-      clearInterval(countdownInterval);
-      document.getElementById('countdown').textContent = '';
-      document.getElementById('countdown').style.display = 'none';
+async function clearAnsweringCountdown() {
+    console.log("in clear Answering Countdown");
+    document.getElementById('countdown').textContent = '';
+    document.getElementById('countdown').style.display = 'none';
+    // await sleep(9000);  // or add another countdown
 }
 
 function getDayOfChristmas() {
-    const start = new Date('2023-12-14');
-    const end = new Date('2024-12-25'); // Include the day after the last day for comparison
+    const start = new Date('12/14/2023');
+    const end = new Date('12/25/2023'); // Include the day after the last day for comparison
     // const today = new Date(); // Replace this with a simulated date for testing
-    const today = new Date('2023-12-14');
+    const today = new Date('12/15/2023');  // Hard code the test date here, comment out for prod
 
-    if (today >= start && today < end) {
+    if (today.getTime() >= start.getTime() && today.getTime() <= end.getTime()) {
         const diff = Math.floor((today - start) / (1000 * 60 * 60 * 24));
+        // console.log("What day is this?", diff + 1);
         return diff + 1; // To get 1 to 12 instead of 0 to 11
     } else {
-        return null; // Not in the 12 days range
+        console.log("What day is this? Returning 12 since we're outside of the range");
+        return 12; // Not in the 12 days range, so always provide the last day
     }
 }
 
@@ -135,35 +141,39 @@ function displayQuestionOfDay(questionIndex) {
 
 function updateTriviaUI(trivia) {
     const questionElement = document.getElementById('question');
-    const optionsForm = document.getElementById('options');
+    //const optionsForm = document.getElementById('options');
+    const optionsContainer = document.getElementById('options');
+
     const feedbackElement = document.getElementById('feedback');
 
-    // Clear previous options
-    optionsForm.innerHTML = '';
-
-    // Set the new question
     questionElement.textContent = trivia.question;
+    optionsContainer.innerHTML = '';
 
-    // Add new options
+    // Add new options as buttons
     trivia.options.forEach((option, index) => {
-        let label = document.createElement('label');
-        let radioButton = document.createElement('input');
-        radioButton.type = 'radio';
-        radioButton.name = 'triviaOption';
-        radioButton.value = option;
-        radioButton.id = 'option' + index;
-
-        label.appendChild(radioButton);
-        label.appendChild(document.createTextNode(option));
-        optionsForm.appendChild(label);
+        let button = document.createElement('button');
+        button.textContent = option;
+        button.classList.add('trivia-option'); // Add a class for styling
+        button.onclick = () => submitAnswer(option, trivia.answer);
+        optionsContainer.appendChild(button);
     });
-
     // Reset feedback
     feedbackElement.textContent = '';
 }
 
+function submitAnswer(selectedAnswer, correctAnswer) {
+    if (selectedAnswer === correctAnswer) {
+        score += 10;
+        document.getElementById('feedback').textContent = 'Correct!';
+    } else {
+        document.getElementById('feedback').textContent = 'Incorrect. Try again.';
+    }
+    endQuestion();
+}
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
-    const submitButton = document.getElementById('submit');
     const feedbackElement = document.getElementById('feedback');
   
     document.getElementById('startButton').addEventListener('click', () => {
@@ -176,21 +186,4 @@ document.addEventListener('DOMContentLoaded', () => {
         window.open(shareUrl, '_blank');
     });
   
-    submitButton.onclick = (e) => {
-        e.preventDefault();
-        clearAnsweringCountdown();
-        const day = getDayOfChristmas();
-        if (day !== null && day <= triviaQuestions.length) {
-            const dayTrivia = triviaQuestions[day - 1];
-            let selectedAnswer = document.querySelector('input[name="triviaOption"]:checked')?.value;
-            let correctAnswer = dayTrivia[currentQuestionIndex].answer;
-            if (selectedAnswer === correctAnswer) {
-                feedbackElement.textContent = 'Correct!';
-               score += 10;
-            } else {
-                feedbackElement.textContent = `Incorrect! The correct answer was \"${correctAnswer}!\"`;
-            }
-            endQuestion();
-        }
-    };
 });
