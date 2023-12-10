@@ -45,7 +45,7 @@ function startInitialCountdown() {
         countdownTime--;
         countdownElement.textContent = `Get ready! Starting in ${countdownTime}...`;
 
-        if (countdownTime <= 1) {
+        if (countdownTime <= 0) {
             stage = "Question";
             clearInterval(countdownInterval);
             countdownElement.textContent = '';
@@ -68,6 +68,7 @@ function endDay() {
     document.getElementById('options').textContent = `End of the Day. Post your score of ${score} to X`;
     document.getElementById('feedback').textContent = `You got a score of ${score} in the 12 Days of XMas Movie Trivia Challenge!`;
     document.getElementById('shareButton').style.display = 'block';
+    document.getElementById('exitButton').style.display = 'block';
 }
 
 
@@ -82,7 +83,7 @@ async function startAnsweringCountdown(callback) {
 
     countdownInterval = setInterval(() => {
        if ((questionAnswered || answeringTime <= 1) & stage == "Question") {
-           answeringTime = 13; // Reset the time or set it to the desired delay
+           answeringTime = 1; // Reset the time or set it to the desired delay
            stage = "Intermission";
            console.log("intermission");
        } else if (answeringTime <= 1 & stage == "Intermission") {
@@ -185,5 +186,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const shareUrl = generateShareUrl(score);
         window.open(shareUrl, '_blank');
     });
-  
+
+    document.getElementById('exitButton').addEventListener('click', () => {
+        window.location.href = 'exit.html';
+    });
 });

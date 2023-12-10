@@ -38,8 +38,19 @@ body {
     border-radius: 10px;
 }
 
-#shareButton {
+#shareButton, #exitButton {
     display: none;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+#startButton {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 1.2em;
 }
 
 .trivia-option {

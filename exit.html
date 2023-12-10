@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exit App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .instructions {
+            margin: 20px 0;
+        }
+
+        .button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Exit App</h1>
+    
+    <div class="instructions">
+        <p>To exit the app, simply use your device's home button or close this browser tab.</p>
+        <p>To save this app to your home screen for easy access:</p>
+        <ul>
+            <li><strong>On Android:</strong> Tap the three-dot menu at the top right of the browser and select 'Add to Home screen.'</li>
+            <li><strong>On iOS:</strong> Tap the share icon in Safari's toolbar and select 'Add to Home Screen.'</li>
+        </ul>
+    </div>
+
+    <button class="button" onclick="window.close();">Close This Tab</button>
+</body>
+</html>
