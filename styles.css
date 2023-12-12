@@ -1,8 +1,37 @@
+@font-face {
+    font-family: snowcap;
+    src: url("/fonts/SnowtopCaps.ttf");
+}
+
+@font-face {
+    font-family: peace;
+    src: url("/fonts/WeLovePeace-jEG79.otf");
+}
+
+@font-face {
+    font-family: pudding;
+    src: url("/fonts/ChristmasPudding.otf");
+}
+
+@font-face {
+    font-family: eighty;
+    src: url("/fonts/eighty.otf");
+}
+
 h1 {
-    font-size: 2rem;
+    background-color: rgba(0, 0, 0, 0.85); /* White with 50% opacity */
+    padding: 10px;
+    border-radius: 5px;
+    font-family: eighty;
+    font-size: 5.5rem;
     text-align: center;
-    color: white; /* Adjust text color if needed */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    color: rgba(256, 256, 256, 1); /* Adjust text color if needed */
+    /* text-shadow: rgba(0, 128, 0, 0.6) 0px 0px 8px; */
+    text-shadow: rgba(255, 0, 0, 0.4) 0px 0px 8px;
+    /* text-shadow: rgba(255, 255, 0, 0.4) 0px 0px 8px; */
+    /* text-shadow: rgba(255, 255, 255, .2) 0px 0px 8px; */
 }
 
 @media only screen and (max-width: 600px) {
@@ -18,27 +47,34 @@ h1 {
 
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: peace;
+    color: black; /* Adjust text color if needed */
     display: flex;
     justify-content: center;
     padding-top: 50px;
-    background: url('/images/annie-spratt-xmas.jpg') no-repeat center center fixed; 
+    background: url('/images/rockin-around.png') no-repeat center center fixed; 
     background-size: cover;
 }
 
 /* Styles for Trivia Options */
 #options label {
+    font-family: peace;
+    color: black; /* Adjust text color if needed */
     display: block;
     margin-bottom: 10px;
 }
 
 #trivia, #intro {
-    background-color: rgba(255, 255, 255, 0.8); /* White with 50% opacity */
+    font-family: peace;
+    color: black; /* Adjust text color if needed */
+    background-color: rgba(234, 229, 229, 0.8); /* White with 50% opacity */
     padding: 15px;
     border-radius: 10px;
 }
 
 #shareButton, #exitButton {
+    font-family: peace;
+    color: black; /* Adjust text color if needed */
     display: none;
     width: 100%;
     padding: 10px;
@@ -47,6 +83,8 @@ body {
 }
 
 #startButton {
+    font-family: peace;
+    color: black; /* Adjust text color if needed */
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -54,6 +92,8 @@ body {
 }
 
 .trivia-option {
+    font-family: peace;
+    color: black; /* Adjust text color if needed */
     display: block;
     width: 100%;
     padding: 10px;
