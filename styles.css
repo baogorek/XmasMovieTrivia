@@ -13,9 +13,7 @@ h1 {
     .container {
         padding: 10px;
     }
-    /* other responsive styles */
 }
-
 
 body {
     font-family: Arial, sans-serif;
@@ -26,27 +24,40 @@ body {
     background-size: cover;
 }
 
+/* CSS Grid */
+.outer {
+  display: grid;
+}
+
+.top .bottom {
+  grid-column: 1;
+  grid-row: 1;
+}
+
 /* Styles for Trivia Options */
 #options label {
     display: block;
     margin-bottom: 10px;
 }
 
-#trivia, #intro {
+#displayContainer {
+    text-align: center;
     background-color: rgba(255, 255, 255, 0.8); /* White with 50% opacity */
     padding: 15px;
     border-radius: 10px;
 }
 
-#shareButton, #exitButton {
-    display: none;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    font-size: 1.2em;
+#navigationButtons {
+    text-align: center;
 }
 
-#startButton {
+#navigationButtons button {
+    margin: 5px;
+}
+
+/* Buttons that are invisible to start */
+#shareButton, #exitButton, #continueButton, #startButton {
+    display: none;
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;

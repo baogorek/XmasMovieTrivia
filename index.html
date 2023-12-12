@@ -1,36 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>12 Days of Xmas Movie Trivia</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Xmas Movie Trivia 2023</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-    <div>
-        <h1>Xmas Movie Trivia</h1>
-    <div id="intro">
-        <h2>Welcome to the 12 Days of Christmas Trivia Game!</h2>
-        <p>Get ready to test your knowledge about Christmas movies.</p>
-        <p>Instructions: Each day, a new question will be presented. Answer as quickly as you can!</p>
-        <button id="startButton">Start the Countdown</button>
+    <div class="outer">
+        <div id="displayContainer" class="top">
+            <div id="presentationArea">
+                <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">Learn More</a>
+            </div>
+            <div id="responseOptions">
+            </div>
+        </div>
+        <div id="navigationButtons" class="bottom">
+            <button id="startButton">Start Playing!</button>
+            <button id="continueButton">Continue</button>
+            <button id="shareButton">Share on X!</button>
+            <button id="exitButton">Exit</button>
+        </div>
     </div>
-
-    <div id="trivia" style="display: none;">
-        <p id="countdown"></p>
-        <p id="question"></p>
-        <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">Learn More</a>
-        <form id="options">
-          <!-- Buttons added dynamically -->
-        </form>
-        <br>
-        <br>
-        <p id="feedback"></p>
-   </div>
-   <button id="shareButton">Share on X!</button>
-   <button id="exitButton">Exit</button>
-  </div>
-  <script src="main.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>

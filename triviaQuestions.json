@@ -1,0 +1,35 @@
+[
+    [
+        {
+            "question": "In the original Gremlins, Billy's father brought Gizmo the Mogwai from:",
+            "options": [
+                "A small shop in Beijing, China",
+                "Chinatown of an unnamed US city",
+                "An antique store in San Francisco",
+                "A market in Hong Kong"
+            ],
+            "answer": "Chinatown of an unnamed US city",
+            "image": "images/gremlins-antiques-dealer.png",
+            "answerExplanation": "In the original Gremlins movie, Billy's father brought Gizmo the Mogwai from a small shop in Chinatown. However, the specific city is not explicitly mentioned in the film."
+        },
+        {
+            "question": "Second question for Day 1",
+            "options": ["Option 3", "Option 4"],
+            "answer": "Option 3",
+            "image": "images/national-lampoon-house.png",
+            "answerExplanation": "Explaining the answer"
+        }
+    ],
+    [
+        {
+            "question": "First question for Day 2",
+            "options": ["Option 1", "Option 2"],
+            "answer": "Option 1"
+        },
+        {
+            "question": "Second question for Day 2",
+            "options": ["Option 3", "Option 4"],
+            "answer": "Option 3"
+        }
+    ]
+]
