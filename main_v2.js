@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     presentationArea.innerHTML = `
         <h2>Welcome to the 12 Days of Christmas Trivia Game!</h2>
         <p>Get ready to test your knowledge about Christmas movies.</p>
-        <p>Instructions: Each day, a new question will be presented. Answer as quickly as you can!</p>
+        <p>Share your score and come back everyday for a new challenge!</p>
     `;
 
     document.getElementById('startButton').style.display = 'block';
