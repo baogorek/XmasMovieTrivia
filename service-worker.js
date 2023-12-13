@@ -5,7 +5,8 @@ self.addEventListener('install', event => {
                 '/',
                 '/index.html',
                 '/styles.css',
-                '/main_v1.js',
+                '/main_v2.js',
+                '/background.js'
             ]);
         })
     );
